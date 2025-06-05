@@ -1,1 +1,13 @@
-{}
+[
+  {
+    "id": 2,
+    "description": "hello",
+    "amount": 10000
+  },
+  {
+    "id": 4,
+    "description": "test",
+    "amount": 20000,
+    "date": "2025-06-05T13:56:38.387Z"
+  }
+]

@@ -1,4 +1,11 @@
 {
+  "name": "expense-tracker-cli",
+  "description": "cli환경에서 작동하는 간단한 지출 트래커 프로그램",
+  "version": "1.0.0",
+  "main": "ExpsTracker.js",
+  "bin": {
+    "exps": "./ExpsTracker.js"
+  },
   "dependencies": {
     "commander": "^14.0.0"
   }

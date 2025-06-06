@@ -1,20 +1,33 @@
 #!/usr/bin/env node
 
 const { Command } = require("commander");
+const Papa = require("papaparse");
 const fs = require("fs");
 const path = require("path");
 const program = new Command();
 
-const expenseFile = path.join(__dirname, "Expense.json");
+const expenseFile = path.join(__dirname, "Expense.csv");
 
 function loadFile() {
   try {
+    // 파일이 존재할 때
     if (fs.existsSync(expenseFile)) {
       const data = fs.readFileSync(expenseFile, "utf-8");
       if (data.trim() === "") {
         return [];
       }
-      return JSON.parse(data);
+      // papaparse를 이용해 parse
+      const result = Papa.parse(data, {
+        header: true, // 파일의 첫번째 줄을 헤더로 인식, 데이터를 객체로
+        skipEmptyLines: true, // 비어있는 줄 건너뜀
+        dynamicTyping: true, // 자동으로 데이터의 자료형을 정함
+      });
+
+      if (result.errors.length > 0) {
+        console.error("CSV 파싱 중 오류 발생: ", error.message);
+      }
+
+      return result.data;
     }
     return [];
   } catch (error) {
@@ -25,7 +38,11 @@ function loadFile() {
 
 function saveData(data) {
   try {
-    fs.writeFileSync(expenseFile, JSON.stringify(data, null, 2));
+    fs.writeFileSync(
+      expenseFile,
+      Papa.unparse(data, { header: true }),
+      "utf-8"
+    );
   } catch (error) {
     console.error("지출 내역을 저장하는 중 오류 발생: ", error.message);
   }
